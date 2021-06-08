@@ -1,12 +1,14 @@
 ## Correr con docker-compose
-    - docker-compose up 
+    - docker-compose up
 
 ## Copiar el .env.example en .env
 
 ## Ejecutar:
     - npm install
-    - squelize db:migrate
-    - nodemon local.js
+    - sequelize db:migrate
+        - (si no esta instalado) npm install -g sequelize-cli
+    - nodemon local.js (Correr el proyecto)
+
 
 ## Postman
     - Importar la colleccion en el postman.
