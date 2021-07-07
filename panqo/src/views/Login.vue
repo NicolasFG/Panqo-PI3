@@ -119,6 +119,7 @@ export default {
   methods: {
     async loginUser(){
       /* Autenticar */
+      this.$router.push('/inicio')
       let password = '';
       let admin = '';
       let validator = await this.$store.dispatch("loadAll");

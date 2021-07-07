@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Registrar from '../views/Registrar.vue'
 import RecuperarContra from '../views/RecuperarContra.vue'
+import Inicio from '../views/Inicio.vue'
+import Analizar from '../views/Analizar.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/recuperarContra',
     name: 'RecuperarContra',
     component: RecuperarContra
+  },
+  {
+    path: '/analizar',
+    name: 'Analizar',
+    component: Analizar
+    },
+  {
+    path: '/inicio',
+    name: 'Inicio',
+    component: Inicio
   },
 ]
 

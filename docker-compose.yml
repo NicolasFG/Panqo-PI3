@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: db_panqo
     ports:
-      - "5432:5432"
+      - "3306:5432"
     networks:
         - panqo-network
   pgadmin:
