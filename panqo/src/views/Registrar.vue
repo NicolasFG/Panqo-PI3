@@ -80,7 +80,7 @@
                     </v-row>
 
                      <v-row justify="center">	
-                        <router-link class="estiloC" to="/login" > <v-text class="estiloC"> ¿Ya tienes una cuenta? ¡Ingresa aquí! </v-text> </router-link>
+                        <router-link class="estiloC" to="/" > <v-text class="estiloC"> ¿Ya tienes una cuenta? ¡Ingresa aquí! </v-text> </router-link>
                     </v-row>
                     <v-container/>
                     <v-container/>
