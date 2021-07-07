@@ -4,40 +4,30 @@
       <v-container class="fill-height" fluid justify="center">
         <v-row align="center" justify="center">
           <v-col md="6">
-
             <v-card >
               <v-container/>
               <v-container/>
               <v-container/>
             <v-row justify="center">
-
-            <v-avatar >
-              <v-icon
-                x-large
-                color="rgb(71, 134, 65)"
-              >
-                mdi-fruit-grapes
-              </v-icon>
-            </v-avatar>
+              <v-avatar >
+                <v-icon x-large color="rgb(71, 134, 65)">
+                  mdi-fruit-grapes
+                </v-icon>
+              </v-avatar>
             </v-row>
-
-              <v-container/>
-              <v-row justify="center">
-                 <v-text class="estilo">Log in</v-text>
-              </v-row>
-            
-
-              <v-spacer></v-spacer>
-              <v-container/>
-              <v-container/>
-          
-
-              <v-form  v-model="valid"> 
-                <v-card-text>
+            <v-container/>
+            <v-row justify="center">
+              <v-text class="estilo">Log in</v-text>
+            </v-row>
+            <v-spacer></v-spacer>
+            <v-container/>
+            <v-container/>
+            <v-form  v-model="valid"> 
+              <v-card-text>
                   
                     <v-row justify="center">
                       <v-col justify="center" md="8">
-                        <v-text-field v-model="loginInfo.email" label="Correo" :rules="emailRules"/>
+                        <v-text-field v-model="User_Info.email" label="Correo" :rules="emailRules"/>
                       </v-col>
                     </v-row>
                     <v-container/>
@@ -47,7 +37,7 @@
                        
                       </div>
                       <v-col justify="center" md="8">
-                        <v-text-field v-model="loginInfo.password" 
+                        <v-text-field v-model="User_Info.password" 
                           label="Contraseña" 
                           :type="showPassword ? 'text' : 'password' "
                           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -65,23 +55,21 @@
                 
 
                  
-                </v-card-text>
-                <v-row justify="center">
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn x-large @click="loginUser" color="rgb(71, 134, 65)"> <v-text class="estiloI"> Ingresa </v-text> </v-btn>
-                  </v-card-actions>
-
-                </v-row>
-
-                <v-row justify="center">	
-                  <router-link class="estiloR" to="/registrar" > <v-text class="estiloR"> ¿No tienes una cuenta? ¡Registrate aquí! </v-text> </router-link>
-                </v-row>
-                <v-container/>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
+              </v-card-text>
+              <v-row justify="center">
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn x-large @click="loginUser" color="rgb(71, 134, 65)"> <v-text class="estiloI"> Ingresa </v-text> </v-btn>
+                </v-card-actions>
+              </v-row>
+              <v-row justify="center">	
+                <router-link class="estiloR" to="/registrar" > <v-text class="estiloR"> ¿No tienes una cuenta? ¡Registrate aquí! </v-text> </router-link>
+              </v-row>
+              <v-container/>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
       </v-container>
     </v-form>
   </v-container>
@@ -98,7 +86,7 @@ export default {
     return {
       showPassword : false,
       valid:false,
-      loginInfo:{
+      User_Info:{
         email: '',
         password: '',
         admin: false
@@ -113,41 +101,17 @@ export default {
       ]
     }
   }, 
-  mounted(){
-    this.$store.dispatch("loadAll")
-  },
   methods: {
-    async loginUser(){
-      /* Autenticar */
-      this.$router.push('/inicio')
-      let password = '';
-      let admin = '';
-      let validator = await this.$store.dispatch("loadAll");
-      console.log(validator.data)
-       for(var i = 0; i < validator.data.length; i++){
-         if(this.loginInfo.email === validator.data[i].email){
-           password = validator.data[i].password;
-           if(validator.data[i].admin == true){
-                admin = validator.data[i].admin;
-                this.loginInfo.admin = admin
-           }else{
-                this.loginInfo.admin = false;
-           }
-         }
-       }
-       if(this.loginInfo.password == password){
-          /* Fin Autenticar */
-          let user = await this.$store.dispatch('loginUser',this.loginInfo);
-          console.log(user);
-          if(user.error){
-            alert(user.error)
-          }else{
-            alert('Gracias por iniciar sesión, ' + user.username);
-          }
-       }else{
-         alert('Correo/Contraseña incorrectos, intenta denuevo')
-       }
-    }
+    async LoginUser(User_Info){
+      let response = await this.$store.dispatch('LoginUser',User_Info);
+      if(response.data){
+        alert(response.data.message+ ' ' + response.data.user.user_name);
+        this.$router.push('/Inicio');
+      }
+      else{
+        alert(response.response.data.message)
+        } 
+      }   
   },
 }
 </script>

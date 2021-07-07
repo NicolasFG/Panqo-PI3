@@ -40,7 +40,7 @@
                   
                     <v-row justify="center">
                       <v-col justify="center" md="8">
-                        <v-text-field v-model="loginInfo.email" label="Correo" :rules="emailRules"/>
+                        <v-text-field v-model="User_Info.email" label="Correo" :rules="emailRules"/>
                       </v-col>
                     </v-row>
                     <v-container/>
@@ -90,7 +90,7 @@ export default {
       
       valid:false,
      
-      loginInfo:{
+      User_Info:{
         email: '',
         admin: false
       },
@@ -100,12 +100,6 @@ export default {
       ],
       
     }
-  },
-  watch: {
-   
-  },  
-  mounted(){
-    this.$store.dispatch("loadAll")
   },
   methods: {
        
