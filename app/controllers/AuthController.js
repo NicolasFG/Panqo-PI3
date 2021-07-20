@@ -12,23 +12,6 @@ async function register(req, res) {
     }
 }
 
-async function registerBusiness(req, res) {
-    if (await Account.findOne({where: {email: req.body.email}})) {
-        return res.status(401).send({message: "La cuenta ya se encuentra registrada"});
-    } else {
-        const dataAccount = await requestBusiness(req.body);
-        return res.send(dataAccount);
-    }
-}
-
-async function registerMuni(req, res) {
-    if (await Account.findOne({where: {email: req.body.email}})) {
-        return res.status(401).send({message: "La cuenta ya se encuentra registrada"});
-    } else {
-        const dataAccount = await requestMuni(req.body);
-        return res.send(dataAccount);
-    }
-}
 
 async function login(req, res) {
     const dataAccount = await validateLogin(req.body);
@@ -97,24 +80,7 @@ async function user(req, res) {
     });
 }
 
-async function info(req, res) {
-    const registrados = await Account.count();
 
-    let count_district = 0
-    if(req.params.district_id){
-        count_district = await User.count({
-                where: {
-                    status: 1,
-                    district_id: req.params.district_id
-                },
-            });
-    }
-
-    return res.send({
-        registrados: registrados,
-        count_district: count_district
-    });
-}
 
 
 async function editUser(req,res){
@@ -122,7 +88,6 @@ async function editUser(req,res){
     let tmpbody = req.body;
     let eAccount={}
     if('email' in tmpbody && tmpbody['email']!=null) {eAccount["email"]=tmpbody["email"]}
-    if('razon_social' in tmpbody && tmpbody['razon_social']!=null) {eAccount["razon_social"]=tmpbody["razon_social"]}
 
     if(Object.keys(eAccount).length != 0){
             await Account.update(eAccount,
@@ -148,32 +113,7 @@ async function editUser(req,res){
     });
 }
 
-async function authFacebook(req, res) {
 
-    let code = req.query.code;
-    console.log('code:', code);
-    let dataAccount =  await loginFacebook(code);
-    if (dataAccount) {
 
-        return res.redirect(process.env.WEB_URL+'/callbackFacebook?token=' + dataAccount.token+'&email='+dataAccount.account.email+'&role='+dataAccount.account.role);
-    } else {
-        return res.redirect(process.env.WEB_URL+'/callbackFacebookError?error=Error');
-    }
-    
-}
 
-async function authGoogle(req, res) {
-
-    let code = req.query.code;
-    console.log('code:', code);
-    let dataAccount =  await loginGoogle(code);
-    if (dataAccount) {
-
-        return res.redirect(process.env.WEB_URL+'/callbackGoogle?token=' + dataAccount.token+'&email='+dataAccount.account.email+'&role='+dataAccount.account.role);
-    } else {
-        return res.redirect(process.env.WEB_URL+'/callbackGoogleError?error=Error');
-    }
-    
-}
-
-module.exports = {register, login, user, recover_password, change_password, registerBusiness, registerMuni,editUser, info, authFacebook, authGoogle};
+module.exports = {register, login, user, recover_password, change_password,editUser};

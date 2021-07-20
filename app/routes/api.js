@@ -1,41 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const AccountController = require('../controllers/AccountController');
+//const AccountController = require('../controllers/AccountController');
 const UserController = require('../controllers/UserController');
 const AuthController = require('../controllers/AuthController');
+const UtilController = require('../controllers/UtilController');
+const FruitController = require('../controllers/FruitController');
+
+const multer= require('multer');
+const upload= multer({dest:'uploads/'});
 
 
 const auth = require('./auth');
-
-router.get('/authenticate/facebook/', AuthController.authFacebook);
-router.get('/authenticate/google/', AuthController.authGoogle);
+const { Route53Resolver } = require('aws-sdk');
 
 
-router.get('/info/:district_id?', AuthController.info);
+
 router.post('/auth/register', AuthController.register);
 router.post('/auth/login', AuthController.login);
 router.post('/recover_password', AuthController.recover_password);
 router.post('/recover/change_password', AuthController.change_password);
-router.post('/register/business', AuthController.registerBusiness);
-router.post('/register/muni', AuthController.registerMuni);
-router.get('/account', auth.required ,AuthController.user);
+router.post('/account/user', auth.required, UserController.save);
+//editar user propio.
 router.post('/account', auth.required ,AuthController.editUser);
-
-
-
-router.get('/accounts', auth.required, AccountController.index);
-router.post('/account/accept', auth.required, AccountController.acceptRequest);
-router.post('/account/deny', auth.required, AccountController.denyRequest);
-router.post('/account/unsuscribe', auth.required, AccountController.unsuscribe);
-
-
-router.get('/account/users', auth.required, UserController.accountUsers);
-router.post('/account/user', auth.required, UserController.accountUserSave);
-router.post('/account/user/:account_id', auth.required, UserController.accountUserEdit);
-router.post('/account/user/:account_id/delete', auth.required, UserController.accountUserDelete);
-router.post('/account/users/delete', auth.required, UserController.accountManyUserDelete);
+//get profile by account_id
 router.get('/account/user/profile/:account_id',auth.required,UserController.getUserProfile)
+//get profle by token.
 router.get('/account/user/profile',auth.required,UserController.getUserProfile)
-router.post('/account/change_password',auth.required,UserController.changePassword)
+
+
+
+//get image by key
+router.get('/images/:key',UtilController.getImage);
+//upload image by key.
+router.post('/images',upload.single('image'),auth.required,UtilController.uploadImage);
+
+//fruit controller.
+
 
 module.exports = router;

@@ -29,7 +29,7 @@ const mailActivate = async (account_id) => {
         };
         const msg = {
             to: account.email, // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Su cuenta ha sido activada',
             templateId: 'd-a30483ec335c41c3856b6cc4dcb0e1bb',
             dynamic_template_data: data,
@@ -54,7 +54,7 @@ const mailNewSubUser = async (data) => {
         sgMail.setApiKey(config.sendgrid_api_key)
         const msg = {
             to: data.email, // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Su cuenta ha sido activada',
             templateId: 'd-a30483ec335c41c3856b6cc4dcb0e1bb',
             dynamic_template_data: data,
@@ -79,7 +79,7 @@ const mailNewRegister = async (data) => {
         sgMail.setApiKey(config.sendgrid_api_key)
         const msg = {
             to: data.email, // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Bienvenido a Operativa',
             templateId: 'd-d4231dc287a7478b9489d30eb029c25c',
             dynamic_template_data: {nombre:data.user?data.user.fullname:''},
@@ -115,7 +115,7 @@ const recoverPassword = async (account) => {
         };
         const msg = {
             to: account.email, // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Recuperación de contraseña',
             templateId: 'd-ff56666decfe4e26a3624bd0d0e391f9',
             dynamic_template_data: data_mail,
@@ -160,8 +160,8 @@ const sendMailContactBusiness = async (data) => {
 
         sgMail.setApiKey(config.sendgrid_api_key)
         const msg = {
-            to: 'soporte@operativa.pe', // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            to: 'jorge.vasquez@utec.edu.pe', // Change to your recipient
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Operativa - Contacto Empresa',
             templateId: 'd-4601ecaf70464884966a002648c8c980',
             dynamic_template_data: data,
@@ -185,8 +185,8 @@ const sendMailContactPostulante = async (data) => {
 
         sgMail.setApiKey(config.sendgrid_api_key)
         const msg = {
-            to: 'soporte@operativa.pe', // Change to your recipient
-            from: 'soporte@operativa.pe', // Change to your verified sender
+            to: 'jorge.vasquez@utec.edu.pe', // Change to your recipient
+            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Operativa - Contacto Postulante',
             templateId: 'd-062e98886658415c93b248683b4d5d75',
             dynamic_template_data: data,

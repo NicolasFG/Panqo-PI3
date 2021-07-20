@@ -23,83 +23,6 @@ const newAccount = async (dataAccount, req) => {
     }
 }
 
-const requestBusiness = async (data, req) => {
-    let dataAccount = {};
-    dataAccount.email = data.email;
-    dataAccount.razon_social = data.razon_social;
-    dataAccount.term_cond = 1;
-    dataAccount.role = 'business';
-    dataAccount.password = await bcrypt.hash('default', 12);
-    dataAccount.status = 4;
-
-    let account = await Account.create(dataAccount);
-    delete account.dataValues.password;
-
-    let dataUser = {
-        'account_id': account.id,
-        'first_name': data.first_name,
-        'last_name': data.last_name,
-        'document_id': 2,
-        'document_number': data.document_number,
-        'phone': data.phone,
-        'area_input': data.area_input,
-        'cargo_input': data.cargo_input,
-        'interest_rubro_id': data.interest_rubro_id,
-    }
-    
-    return await User.create(dataUser,{returning: true}).then(async (user)=>{
-        
-        return {
-            message: "Se verificarán los datos de la empresa y se enviará un correo para que pueda ingresar.",
-            account: account,
-            // token: token,
-            user: user
-        }
-    }).catch(async (error) => {
-        account.destroy();
-        return {
-            message:error
-        }
-    });
-    // let token = await generateToken(account.get({plain: true}))
-}
-
-const requestMuni = async (data, req) => {
-    let dataAccount = {};
-    dataAccount.email = data.email;
-    dataAccount.razon_social = data.razon_social;
-    dataAccount.term_cond = 1;
-    dataAccount.role = 'muni';
-    dataAccount.password = await bcrypt.hash('default', 12);
-    dataAccount.status = 4;
-
-    let account = await Account.create(dataAccount);
-    delete account.dataValues.password;
-    let dataUser = {
-        'account_id': account.id,
-        'first_name': data.first_name,
-        'last_name': data.last_name,
-        'document_id': 2,
-        'document_number': data.document_number,
-        'phone': data.phone,
-        'area_input': data.area_input,
-        'district_id': data.district_id,
-        'cargo_input': data.cargo_input
-    }
-    return await User.create(dataUser).then(async (user)=>{
-        return {
-            message: "Se verificarán los datos de la empresa y se enviará un correo para que pueda ingresar.",
-            account: account,
-            // token: token,
-            user: user
-        }
-    }).catch(async (error)=>{
-        account.destroy();
-        return {
-            message: error
-        }
-    });
-}
 
 const validateLogin = async (dataAccount, req) => {
     let account = await Account.findOne(
@@ -338,4 +261,4 @@ async function loginSocial(dataSocial,social){
     return false;
 }
 
-module.exports = {newAccount, validateLogin, requestBusiness, requestMuni, loginFacebook, loginGoogle};
+module.exports = {newAccount, validateLogin};
