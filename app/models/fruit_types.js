@@ -10,13 +10,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      fruit_types.belongsTo(models.fruit,{
+          as: 'fruit',
+          foreignKey: "fruit_id",
+          targetKey: "id"
+        });
+
+      fruit_types.hasMany(models.fruit_types_analysis,{
+        as: "fruit_types_analysis",
+        foreignKey: "fruit_type_id",
+        // targetKey:'fruit_type_id'
+      });
     }
   };
   fruit_types.init({
     fruit_id: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    status: DataTypes.TINYINT
+    status: DataTypes.TINYINT,
   }, {
     sequelize,
     modelName: 'fruit_types',

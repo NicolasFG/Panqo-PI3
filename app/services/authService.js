@@ -15,7 +15,7 @@ const newAccount = async (dataAccount, req) => {
     let token = await generateToken(account)
     delete account.password;
 
-    //mailNewRegister(account);
+    mailNewRegister(account);
     
     return {
         account: account,

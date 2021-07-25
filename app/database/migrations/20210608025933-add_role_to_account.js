@@ -7,7 +7,7 @@ module.exports = {
       'role',
       {
         type: Sequelize.STRING,
-        defaultValue: 'postulante'
+        defaultValue: 'user'
       }
   );
   },

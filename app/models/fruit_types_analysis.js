@@ -11,6 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      fruit_types_analysis.belongsTo(models.fruit_types,
+      {
+        as: "fruit_types",
+        foreignKey: "fruit_type_id",
+        targetKey: "id"
+      });
     }
   };
   fruit_types_analysis.init({

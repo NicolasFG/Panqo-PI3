@@ -11,13 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      fruit.hasMany(models.fruit_types,{
+        as: "fruit_types",
+        foreignKey: "fruit_id",
+        // targetKey:'fruit_id'
+      });
+
     }
   };
   fruit.init({
     name: DataTypes.STRING,
     origin: DataTypes.STRING,
     imagen_key: DataTypes.STRING,
-    status:DataTypes.TINYINT,
+    status: DataTypes.TINYINT,
     image_url:{
       type:DataTypes.VIRTUAL,
       get(){

@@ -23,10 +23,10 @@ module.exports = {
         allowNull: true
       },
       term_cond: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TINYINT
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TINYINT
       },
       createdAt: {
         allowNull: false,

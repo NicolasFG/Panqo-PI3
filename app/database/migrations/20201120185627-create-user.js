@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       gender: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TINYINT
       },
       document_number: {
         type: Sequelize.STRING
@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TINYINT,
         default: 1
       },
       createdAt: {

@@ -7,71 +7,6 @@ const Account = require('../models').account;
 const User = require('../models').user;
 const moment = require('moment');
 
-const mailActivate = async (account_id) => {
-    if(account_id){
-        let account = await Account.findByPk(account_id,{
-            attributes: {exclude: ['password']},
-            include: [{
-                model: User,
-                as: "user"
-            }],
-        });
-        let password_temporal = randomString(6);
-        let hash_pass = await bcrypt.hash(password_temporal, 12);
-        account.update({password: hash_pass});
-
-        sgMail.setApiKey(config.sendgrid_api_key)
-        let data = {
-            "url_login":process.env.WEB_URL+'/iniciar-sesion',
-            "name":account.user?account.user.fullname:'',
-            "email":account.email,
-            "clave":password_temporal
-        };
-        const msg = {
-            to: account.email, // Change to your recipient
-            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
-            subject: 'Su cuenta ha sido activada',
-            templateId: 'd-a30483ec335c41c3856b6cc4dcb0e1bb',
-            dynamic_template_data: data,
-        }
-        return sgMail
-            .send(msg)
-            .then(() => {
-                return password_temporal
-            })
-            .catch((error) => {
-                // console.log("error_email: ", error)
-                console.log("error_email2: ", error.response.body)
-                return false;
-            });
-    }
-    return false;
-}
-
-const mailNewSubUser = async (data) => {
-    if(data){
-
-        sgMail.setApiKey(config.sendgrid_api_key)
-        const msg = {
-            to: data.email, // Change to your recipient
-            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
-            subject: 'Su cuenta ha sido activada',
-            templateId: 'd-a30483ec335c41c3856b6cc4dcb0e1bb',
-            dynamic_template_data: data,
-        }
-        return sgMail
-            .send(msg)
-            .then(() => {
-                return data
-            })
-            .catch((error) => {
-                // console.log("error_email: ", error)
-                console.log("error_email2: ", error.response.body)
-                return false;
-            });
-    }
-    return false;
-}
 
 const mailNewRegister = async (data) => {
     if(data){
@@ -80,8 +15,8 @@ const mailNewRegister = async (data) => {
         const msg = {
             to: data.email, // Change to your recipient
             from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
-            subject: 'Bienvenido a Operativa',
-            templateId: 'd-d4231dc287a7478b9489d30eb029c25c',
+            subject: 'Bienvenido a Panqo',
+            templateId: 'd-7748279442164de39060d2af8c06004c',
             dynamic_template_data: {nombre:data.user?data.user.fullname:''},
         }
         return sgMail
@@ -91,7 +26,7 @@ const mailNewRegister = async (data) => {
             })
             .catch((error) => {
                 // console.log("error_email: ", error)
-                console.log("error_email_postulante_register: ", error.response.body)
+                console.log("error_email_user_register: ", error.response.body)
                 return false;
             });
     }
@@ -155,55 +90,6 @@ const changePassword = async (account, password) => {
     }
 }
 
-const sendMailContactBusiness = async (data) => {
-    if(data){
-
-        sgMail.setApiKey(config.sendgrid_api_key)
-        const msg = {
-            to: 'jorge.vasquez@utec.edu.pe', // Change to your recipient
-            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
-            subject: 'Operativa - Contacto Empresa',
-            templateId: 'd-4601ecaf70464884966a002648c8c980',
-            dynamic_template_data: data,
-        }
-        return sgMail
-            .send(msg)
-            .then(() => {
-                return data
-            })
-            .catch((error) => {
-                // console.log("error_email: ", error)
-                console.log("error_email2: ", error.response.body)
-                return false;
-            });
-    }
-    return false;
-}
-
-const sendMailContactPostulante = async (data) => {
-    if(data){
-
-        sgMail.setApiKey(config.sendgrid_api_key)
-        const msg = {
-            to: 'jorge.vasquez@utec.edu.pe', // Change to your recipient
-            from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
-            subject: 'Operativa - Contacto Postulante',
-            templateId: 'd-062e98886658415c93b248683b4d5d75',
-            dynamic_template_data: data,
-        }
-        return sgMail
-            .send(msg)
-            .then(() => {
-                return data
-            })
-            .catch((error) => {
-                // console.log("error_email: ", error)
-                console.log("error_email2: ", error.response.body)
-                return false;
-            });
-    }
-    return false;
-}
 
 const randomString = (length) => {
     let result = '';
@@ -238,5 +124,5 @@ const getPagingData = (data, page, limit) => {
     return { totalItems, rows, totalPages, currentPage };
   };
 
-module.exports = {mailActivate, generateToken, randomString, recoverPassword, changePassword, mailNewSubUser,getPagingData,getPagination,
-    sendMailContactBusiness, sendMailContactPostulante, mailNewRegister};
+module.exports = { generateToken, randomString, recoverPassword, changePassword,getPagingData,getPagination,
+      mailNewRegister};
