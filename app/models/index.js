@@ -7,16 +7,34 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/database.js')[env];
 const db = {};
+const env2 = require('./env.js');
 
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  console.log(config.database);
-  console.log(config.username);
-  console.log(config.password);
-  console.log(config.config);
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+  console.log(env);
+  if(env=='production'){
+
+    sequelize = new Sequelize(env2.database, env2.username, env2.password, {
+      host: env2.host,
+      dialect: env2.dialect,
+      operatorsAliases: false,
+    
+      pool: {
+        max: env2.max,
+        min: env2.pool.min,
+        acquire: env2.pool.acquire,
+        idle: env2.pool.idle
+      }
+    });
+
+  }else{
+
+    sequelize = new Sequelize(config.database, config.username, config.password, config);
+  }
+
 }
 
 fs
