@@ -70,7 +70,6 @@ router.delete('/fruit_types_analysis/:fruit_types_analysis_id', auth.required, F
 
 
 
-//get image by key
 router.get('/images/:key',UtilController.getImage);
 //upload image by key.
 router.post('/images',upload.single('image'),auth.required,UtilController.uploadImage);
