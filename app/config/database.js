@@ -12,6 +12,10 @@ module.exports = {
         timezone: '-05:00',
         dialectOptions: {
             supportBigNumbers: true,
+            ssl: {
+                require: true,
+                rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+              }
             // bigNumberStrings: true,
         }
     },
