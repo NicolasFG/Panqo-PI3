@@ -21,12 +21,18 @@ if (config.use_env_variable) {
       host: env2.host,
       dialect: env2.dialect,
       operatorsAliases: false,
-    
       pool: {
         max: env2.max,
         min: env2.pool.min,
         acquire: env2.pool.acquire,
         idle: env2.pool.idle
+      },
+      dialectOptions: {
+        supportBigNumbers: true,
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+          }
       }
     });
 
