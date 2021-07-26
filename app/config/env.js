@@ -11,6 +11,14 @@ const env = {
         min: 0,
         acquire: 30000,
         idle: 10000
+    },
+    timezone: '-05:00',
+    dialectOptions: {
+        supportBigNumbers: true,
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+          }
     }
   };
    
