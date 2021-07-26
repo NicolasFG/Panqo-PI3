@@ -17,8 +17,8 @@ const auth = require('./auth');
 /*auth */
 router.post('/auth/register', AuthController.register);
 router.post('/auth/login', AuthController.login);
-router.post('/recover_password', AuthController.recover_password);
-router.post('/recover/change_password', AuthController.change_password);
+// router.post('/recover_password', AuthController.recover_password);
+// router.post('/recover/change_password', AuthController.change_password);
 
 //editar user propio.
 router.post('/account', auth.required ,AuthController.editUser);
