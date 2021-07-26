@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     fruit_type_id: DataTypes.INTEGER,
     status: DataTypes.TINYINT,
     image_key: DataTypes.STRING,
+    result:DataTypes.INTEGER,
+    result_text:DataTypes.STRING,
     image_url:{
       type:DataTypes.VIRTUAL,
       get(){
@@ -37,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'fruit_types_analysis',
+    freezeTableName: true,
   });
   return fruit_types_analysis;
 };

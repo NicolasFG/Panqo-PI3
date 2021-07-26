@@ -15,6 +15,9 @@ module.exports = {
           key: 'id'
         }
       },
+      image_key: {
+        type: Sequelize.STRING
+      },
       name: {
         type: Sequelize.STRING
       },

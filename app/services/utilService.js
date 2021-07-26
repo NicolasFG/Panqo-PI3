@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcrypt');
 const sgMail = require('@sendgrid/mail')
-const Account = require('../models').account;
-const User = require('../models').user;
+// const Account = require('../models').account;
 const moment = require('moment');
 
 
@@ -17,7 +16,7 @@ const mailNewRegister = async (data) => {
             from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Bienvenido a Panqo',
             templateId: 'd-7748279442164de39060d2af8c06004c',
-            dynamic_template_data: {nombre:data.user?data.user.fullname:''},
+            dynamic_template_data: {nombre:data.fullname?data.fullname:''},
         }
         return sgMail
             .send(msg)
@@ -44,7 +43,7 @@ const recoverPassword = async (account) => {
         sgMail.setApiKey(config.sendgrid_api_key);
         let data_mail = {
             "email":account.email,
-            "name":account.user?account.user.first_name:'',
+            "name":account.fullname?account.fullname:'',
             "clave":"",
             "url":`${process.env.WEB_URL}/new-password?token=${token_recover}`
         };
@@ -52,7 +51,7 @@ const recoverPassword = async (account) => {
             to: account.email, // Change to your recipient
             from: 'jorge.vasquez@utec.edu.pe', // Change to your verified sender
             subject: 'Recuperación de contraseña',
-            templateId: 'd-ff56666decfe4e26a3624bd0d0e391f9',
+            templateId: 'd-4e469f3e64b54653ab6511aa29acca8b',
             dynamic_template_data: data_mail,
         }
         return sgMail

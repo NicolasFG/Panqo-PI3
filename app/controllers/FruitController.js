@@ -14,7 +14,7 @@ async function saveFruit(req,res) {
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -22,14 +22,20 @@ async function saveFruit(req,res) {
 async function updateFruit (req,res){
 
     try {
-        let fruit = await Fruit.update(req.body,{
-            where: {id : req.params.fruit_id}
-        })
-        return res.send({fruit:fruit,message:"Fruta actualizada."})
+        
+        await Fruit.update(req.body,
+            {returning: true, where: {id: req.params.fruit_id}})
+            .then(async (result) => {
+            let fruit = await Fruit.findByPk(req.params.fruit_id);
+            res.send({fruit:fruit,message:"Fruta actualizada."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
@@ -41,15 +47,15 @@ async function getFruits(req,res) {
             },
             include:[{
                 model:FruitTypes,
-                as:"fruit_types"
-            }],
-            raw:true
+                as:"fruit_types",
+                required: false 
+            }]
          });
         return res.send(fruits);
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
@@ -75,17 +81,23 @@ async function deleteFruit(req,res) {
     
     try {
 
-        let fruit= await Fruit.update({status:0},{
-            where:{
-                id:req.params.fruit_id
-            }
-        })
-
-        return res.send({fruit:fruit,message:"Fruta eliminada."})
+        await Fruit.update({status:0},{
+                returning: true,
+                where:{
+                    id:req.params.fruit_id
+                }
+            })
+            .then(async (result) => {
+            let fruit = await Fruit.findByPk(req.params.fruit_id);
+            res.send({fruit:fruit,message:"Fruta eliminada."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
@@ -94,11 +106,11 @@ async function saveFruitType(req,res) {
     try {
         req.body.status=1;
         let fruit_type = await FruitTypes.create(req.body);
-        return res.send({fruit_type: fruit_type, message:"Fruta tipo creada"});
+        return res.send({fruit_type: fruit_type, message:"Tipo de fruta creada"});
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -106,19 +118,18 @@ async function saveFruitType(req,res) {
 async function getFruitTypes(req,res){
 
     try {
-
-        let fruit_types= FruitTypes.findAll({
+        // console.log("Fruit types");
+        let fruit_types= await FruitTypes.findAll({
             where :{
                 status:1
-            },
-            raw:true
+            }
         })
 
         return res.send(fruit_types);
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -127,18 +138,23 @@ async function getFruitTypebyId(req,res){
 
     try {
 
-        let fruit_type=FruitTypes.findByPk(req.params.fruit_type_id,{
-            include:[{
-                model:FruitTypesAnalysis,
-                as:"fruit_types_analysis"
-            }],
+        let fruit_type= await FruitTypes.findAll(
+            {
+                where:{
+                    id:req.params.fruit_type_id,
+                    status:1
+                },
+                include:[{
+                    model:FruitTypesAnalysis,
+                    as:'fruit_types_analysis'
+                }]
         });
 
         return res.send(fruit_type);
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -147,13 +163,16 @@ async function getFruitTypebyFruitId(req,res){
 
     try {
 
-        let fruit_types=FruitTypes.findAll(
+        let fruit_types= await FruitTypes.findAll(
                 {
                     where: {
                         fruit_id: req.params.fruit_id,
-                        status: 1
+                        status: 1,
                     },
-                    raw:true
+                    include:[{
+                        model:FruitTypesAnalysis,
+                        as:'fruit_types_analysis'
+                    }]
                 }
             );
 
@@ -161,7 +180,7 @@ async function getFruitTypebyFruitId(req,res){
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -170,34 +189,41 @@ async function updateFruitType(req,res) {
 
     try {
 
-        let fruit_type = await FruitTypes.update(req.body,{
-            where: {id : req.params.fruit_type_id}
-        })
-        return res.send({fruit_type:fruit_type,message:"Tipo de fruita actualizada."})
-
+        await FruitTypes.update(req.body,
+            {returning: true, where: {id: req.params.fruit_type_id}})
+            .then(async (result) => {
+            let fruit_type = await FruitTypes.findByPk(req.params.fruit_type_id);
+            res.send({fruit_type:fruit_type,message:"Tipo de fruita actualizada."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
     
 }
 
-async function deleteFruitType(res,res){
+async function deleteFruitType(req,res){
 
     try {
 
-        let fruit_type= await FruitTypes.update({status:0},{
-            where:{
-                id: req.params.fruit_type_id
-            }
-        })
 
-        return res.send({fruit_type:fruit_type,message:"Tipo de fruta eliminada."})
+        await FruitTypes.update({status:0},
+            {returning: true, where: {id: req.params.fruit_type_id}})
+            .then(async (result) => {
+            let fruit_type = await FruitTypes.findByPk(req.params.fruit_type_id);
+            res.send({fruit_type:fruit_type,message:"Tipo de fruita eliminada."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -211,7 +237,7 @@ async function saveFruitTypeAnalysis(req,res) {
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 
 }
@@ -219,7 +245,7 @@ async function saveFruitTypeAnalysis(req,res) {
 async function getFruitTypesAnalysis(req,res){
 
     try {
-        let fruit_types_analysis=FruitTypesAnalysis.findAll({
+        let fruit_types_analysis=await FruitTypesAnalysis.findAll({
             where:{
                 status:1
             }
@@ -227,14 +253,14 @@ async function getFruitTypesAnalysis(req,res){
         return res.send(fruit_types_analysis)
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
 async function getFruitTypesAnalysisbyId(req,res){
 
     try {
-        let fruit_types_analysis=FruitTypesAnalysis.findAll({
+        let fruit_types_analysis=await FruitTypesAnalysis.findAll({
             where:{
                 status:1,
                 id: req.params.fruit_types_analysis_id
@@ -243,14 +269,14 @@ async function getFruitTypesAnalysisbyId(req,res){
         return res.send(fruit_types_analysis)
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
 async function getFruitTypesAnalysisbyTypeId(req,res){
 
     try {
-        let fruit_types_analysis=FruitTypesAnalysis.findAll({
+        let fruit_types_analysis= await FruitTypesAnalysis.findAll({
             where:{
                 status:1,
                 fruit_type_id: req.params.fruit_type_id
@@ -259,21 +285,21 @@ async function getFruitTypesAnalysisbyTypeId(req,res){
         return res.send(fruit_types_analysis)
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
 async function getFruitTypesAnalysisbyFruitId(req,res){
 
     try {
-        let fruit_types_analysis=FruitTypesAnalysis.findAll({
+        let fruit_types_analysis= await FruitTypesAnalysis.findAll({
             where:{
                 status:1
             },
             include:[
                 { 
                     model:FruitTypes,
-                    as:"fruit_type",
+                    as:"fruit_types",
                     include:[{
                         model:Fruit,
                         as:"fruit",
@@ -287,7 +313,7 @@ async function getFruitTypesAnalysisbyFruitId(req,res){
         return res.send({fruit_types_analysis})
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 
@@ -295,14 +321,19 @@ async function updategetFruitTypesAnalysis(req,res) {
 
     try {
 
-        let fruit_types_analysis = await FruitTypesAnalysis.update(req.body,{
-            where: {id : req.params.fruit_types_analysis_id}
-        })
-        return res.send({fruit_types_analysis:fruit_types_analysis,message:"Analsis de tipo de fruta actualizado."})
+        await FruitTypesAnalysis.update(req.body,
+            {returning: true, where: {id: req.params.fruit_types_analysis_id}})
+            .then(async (result) => {
+            let fruit_types_analysis = await FruitTypesAnalysis.findByPk(req.params.fruit_types_analysis_id);
+            res.send({fruit_types_analysis:fruit_types_analysis,message:"Analsis de tipo de fruta actualizado."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
     
 }
@@ -310,22 +341,21 @@ async function updategetFruitTypesAnalysis(req,res) {
 async function deleteFruitTypesAnalysis(req,res){
 
     try {
-
-        let fruit_types_analysis= await FruitTypesAnalysis.update(
-            {
+        await FruitTypesAnalysis.update({
                 status:0
             },
-            {
-                where:{
-                    id: req.params.fruit_types_analysis_id
-            }
-        })
-
-        return res.send({fruit_types_analysis:fruit_types_analysis,message:"Analisis de tipo de fruita eliminada."})
+            {returning: true, where: {id: req.params.fruit_types_analysis_id}})
+            .then(async (result) => {
+            let fruit_types_analysis = await FruitTypesAnalysis.findByPk(req.params.fruit_types_analysis_id);
+            res.send({fruit_types_analysis:fruit_types_analysis,message:"Analsis de tipo de fruta elimiado."})
+        }).catch(function (err) {
+            console.log("error:", err);
+            res.status(409).send({error: err});
+        });
 
     } catch (error) {
         console.log(error)
-        res.status(401).send({message: 'Error inesperado', error: error});
+        return res.status(401).send({message: 'Error inesperado', error: error});
     }
 }
 

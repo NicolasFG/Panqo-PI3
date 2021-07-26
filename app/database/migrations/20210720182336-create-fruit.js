@@ -14,7 +14,7 @@ module.exports = {
       origin: {
         type: Sequelize.STRING
       },
-      imagen_key: {
+      image_key: {
         type: Sequelize.STRING
       },
       status: {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 //const AccountController = require('../controllers/AccountController');
-const UserController = require('../controllers/UserController');
+// const UserController = require('../controllers/UserController');
 const AuthController = require('../controllers/AuthController');
 const UtilController = require('../controllers/UtilController');
 const FruitController = require('../controllers/FruitController');
@@ -19,13 +19,13 @@ router.post('/auth/register', AuthController.register);
 router.post('/auth/login', AuthController.login);
 router.post('/recover_password', AuthController.recover_password);
 router.post('/recover/change_password', AuthController.change_password);
-router.post('/account/user', auth.required, UserController.save);
+
 //editar user propio.
 router.post('/account', auth.required ,AuthController.editUser);
 //get profile by account_id
-router.get('/account/user/profile/:account_id',auth.required,UserController.getUserProfile)
-//get profle by token.
-router.get('/account/user/profile',auth.required,UserController.getUserProfile)
+router.get('/account', auth.required ,AuthController.user);
+//update account
+router.put('/account',auth.required ,AuthController.editUser);
 
 
 /*Fruits*/
@@ -41,32 +41,32 @@ router.get('/fruit/:fruit_id', auth.required, FruitController.getFruitById);
 router.delete('/fruit/:fruit_id',auth.required, FruitController.deleteFruit);
 /*Fruit types */
 //save fruit type
-router.post('/fruit/types', auth.required, FruitController.saveFruitType);
+router.post('/fruit_types', auth.required, FruitController.saveFruitType);
 //get fruit types
-router.get('/fruit/types', auth.required, FruitController.getFruitTypes);
+router.get('/fruit_types', auth.required, FruitController.getFruitTypes);
 //get fruit type by id
-router.get('/fruit/types/:fruit_type_id', auth.required, FruitController.getFruitTypebyId);
+router.get('/fruit_types/:fruit_type_id', auth.required, FruitController.getFruitTypebyId);
 //get fruit type by fruit_id
-router.get('/fruit/types/byFruitId/:fruit_id', auth.required, FruitController.getFruitTypebyFruitId);
+router.get('/fruit_types/byFruitId/:fruit_id', auth.required, FruitController.getFruitTypebyFruitId);
 //update fruit Type
-router.put('/fruit/types/:fruit_type_id', auth.required, FruitController.updateFruitType);
+router.put('/fruit_types/:fruit_type_id', auth.required, FruitController.updateFruitType);
 //delete fruit Type
-router.delete('/fruit/types/:fruit_type_id', auth.required, FruitController.deleteFruitType);
+router.delete('/fruit_types/:fruit_type_id', auth.required, FruitController.deleteFruitType);
 /*Fruit types analisys */
 //save fruit type analysis
-router.post('/fruit/types/analysis', auth.required, FruitController.saveFruitTypeAnalysis);
+router.post('/fruit_types_analysis', auth.required, FruitController.saveFruitTypeAnalysis);
 //get fruit type analisys
-router.get('/fruit/types/analysis', auth.required, FruitController.getFruitTypesAnalysis);
+router.get('/fruit_types_analysis', auth.required, FruitController.getFruitTypesAnalysis);
 //get fruit type analisys by id
-router.get('/fruit/types/analysis/:fruit_types_analysis_id', auth.required, FruitController.getFruitTypesAnalysisbyId);
+router.get('/fruit_types_analysis/:fruit_types_analysis_id', auth.required, FruitController.getFruitTypesAnalysisbyId);
 //get fruit type analisys by fruit_type_id
-router.get('/fruit/types/analysis/byFruitTypeId/:fruit_type_id', auth.required, FruitController.getFruitTypesAnalysisbyTypeId);
+router.get('/fruit_types_analysis/byFruitTypeId/:fruit_type_id', auth.required, FruitController.getFruitTypesAnalysisbyTypeId);
 //get fruit type analisys by fruit_id
-router.get('/fruit/types/analysis/byFruitId/:fruit_id', auth.required, FruitController.getFruitTypesAnalysisbyFruitId);
+router.get('/fruit_types_analysis/byFruitId/:fruit_id', auth.required, FruitController.getFruitTypesAnalysisbyFruitId);
 //upate fruit type analisys by id
-router.put('/fruit/types/analysis/:fruit_types_analysis_id', auth.required, FruitController.updategetFruitTypesAnalysis);
+router.put('/fruit_types_analysis/:fruit_types_analysis_id', auth.required, FruitController.updategetFruitTypesAnalysis);
 //delete fruit type analisys by id
-router.delete('/fruit/types/analysis/:fruit_types_analysis_id', auth.required, FruitController.deleteFruitTypesAnalysis);
+router.delete('/fruit_types_analysis/:fruit_types_analysis_id', auth.required, FruitController.deleteFruitTypesAnalysis);
 
 
 

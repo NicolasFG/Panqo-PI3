@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       fruit.hasMany(models.fruit_types,{
         as: "fruit_types",
         foreignKey: "fruit_id",
-        // targetKey:'fruit_id'
+        targetKey:"fruit_id"
       });
 
     }
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   fruit.init({
     name: DataTypes.STRING,
     origin: DataTypes.STRING,
-    imagen_key: DataTypes.STRING,
+    image_key: DataTypes.STRING,
     status: DataTypes.TINYINT,
     image_url:{
       type:DataTypes.VIRTUAL,

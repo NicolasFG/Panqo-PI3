@@ -10,33 +10,37 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      account.hasOne(models.user,{
-        as: "user",
-        foreignKey: "account_id",
-        // targetKey: "id"
-      });
+  
     }
   }
   account.init({
     email: DataTypes.STRING,
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
     password: DataTypes.STRING,
     token_recover: DataTypes.STRING,
     valid_token: DataTypes.STRING,
     term_cond: DataTypes.TINYINT,
     role: DataTypes.STRING,
     status: DataTypes.TINYINT, //1 habilitado //3 password_temporal //4 por aprobar de admin //2 desaprobado
-    rol_usuario: {
+    // rol_usuario: {
+    //   type: DataTypes.VIRTUAL,
+    //   get() {
+    //     const rawValue = this.get('role');
+    //     if(rawValue){
+    //       if(rawValue.substr(0,3) === 'sub'){
+    //         return 'Usuario'
+    //       }else{
+    //         return 'Administrador'
+    //       }
+    //     }
+    //     return null;
+    //   }
+    // },
+    fullname: {
       type: DataTypes.VIRTUAL,
       get() {
-        const rawValue = this.get('role');
-        if(rawValue){
-          if(rawValue.substr(0,3) === 'sub'){
-            return 'Usuario'
-          }else{
-            return 'Administrador'
-          }
-        }
-        return null;
+        return `${this.get('first_name')} ${this.get('last_name')?this.get('last_name'):''}`;
       }
     }
   }, {

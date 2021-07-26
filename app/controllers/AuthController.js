@@ -1,7 +1,6 @@
-const {newAccount, validateLogin, requestBusiness, requestMuni, loginFacebook, loginGoogle} = require('../services/authService')
+const {newAccount, validateLogin} = require('../services/authService')
 const {recoverPassword, changePassword} = require('../services/utilService')
 const Account = require('../models').account;
-const User = require('../models').user;
 
 async function register(req, res) {
     if (await Account.findOne({where: {email: req.body.email}})) {
@@ -24,11 +23,7 @@ async function login(req, res) {
 
 async function recover_password(req, res) {
     const account = await Account.findOne({
-        where: {email: req.body.email},
-        include: [{
-            model: User,
-            as: "user"
-        }],
+        where: {email: req.body.email}
     });
     if (account) {
         if(account.status===2){
@@ -74,7 +69,8 @@ async function user(req, res) {
     const {id} = res.locals.account;
     const account = await Account.findByPk(id, {
         attributes: {exclude: ['password']},
-        include: [{model: User, as: 'user'}]});
+        }
+        );
     return res.send({
         account: account
     });
@@ -84,33 +80,35 @@ async function user(req, res) {
 
 
 async function editUser(req,res){
-    const {id} = res.locals.account;
-    let tmpbody = req.body;
-    let eAccount={}
-    if('email' in tmpbody && tmpbody['email']!=null) {eAccount["email"]=tmpbody["email"]}
+    try{
 
-    if(Object.keys(eAccount).length != 0){
-            await Account.update(eAccount,
-            {where: {id: id}}).then(async (result) => {
-        }).catch(function (err) {
-            console.log("error:", err);
-            return res.status(409).send({error: err});
-        });
-    }
-    if('user' in tmpbody){
-        await User.update(tmpbody["user"],
-            {where: {account_id: id}}).then(async (result) => {
+        const {id} = res.locals.account;
+        let tmpbody = req.body;
+        let updabody={};
+        if('first_name' in tmpbody ) updabody['first_name']=tmpbody.first_name;
+        if('last_name'  in tmpbody ) updabody['last_name']=tmpbody.last_name;
+        if('email'  in tmpbody ) updabody['last_name']=tmpbody.last_name;
+        if('role'  in tmpbody ) updabody['role']=tmpbody.role;
+    
+        await Account.update(updabody,
+                {where: {id: id}}).then(async (result) => {
             }).catch(function (err) {
                 console.log("error:", err);
                 return res.status(409).send({error: err});
-            });
+        });
+
+        const account = await Account.findByPk(id, {
+            attributes: {exclude: ['password']},
+        });
+
+        return res.send({
+            account: account
+        });
     }
-    const account = await Account.findByPk(id, {
-        attributes: {exclude: ['password']},
-        include: [{model: User, as: 'user'}]});
-    return res.send({
-        account: account
-    });
+    catch (error) {
+        console.log(error)
+        res.status(401).send({message: 'Error inesperado', error: error});
+    }
 }
 
 
