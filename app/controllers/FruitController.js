@@ -98,7 +98,13 @@ async function getAnalysisByAccountId(req,res){
         let analysis = await Analysis.findAll({
             where:{
                 account_id:req.params.account_id
-            }
+            },
+            include:[
+                {
+                    model:Fruit,
+                    as:"fruits"
+                }
+            ]
         });
         return res.send(analysis);
 
@@ -116,7 +122,13 @@ async function getAnalysis(req,res){
         let analysis = await Analysis.findAll({
             where:{
                 account_id:id
-            }
+            },
+            include:[
+                {
+                    model:Fruit,
+                    as:"fruits"
+                }
+            ]
         });
         return res.send(analysis);
 
