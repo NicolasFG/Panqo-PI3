@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     Users: [],
+    Imges: [],
     currentUser: {},
   },
   mutations: {
@@ -16,7 +17,9 @@ export default new Vuex.Store({
     LOGOUT_USER(state) {
       state.currentUser = {};
       window.localStorage.currentUser = JSON.stringify({});
+      window.localStorage.token = JSON.stringify({});
       window.localStorage.clear();
+      // delete axios.defaults.headers.common['Authorization'];
     },
     SET_CURRENT_USER(state, user) {
       state.currentUser = user;
@@ -41,8 +44,8 @@ export default new Vuex.Store({
       try {
         let response = await Api().post('/auth/login', Userinfo);
         console.log(response);
-        let user = response.data.account;
-        commit('SET_CURRENT_USER', user);
+        window.localStorage.token = JSON.stringify(response.data.token);
+        commit('SET_CURRENT_USER', response.data.account);
         return response;
       } catch (error) {
         return error;
@@ -52,22 +55,28 @@ export default new Vuex.Store({
       try {
         console.log(Userinfo);
         let response = await Api().post('/auth/register', Userinfo);
-        console.log(response);
-        let user = response.data.account;
-        commit('SET_CURRENT_USER', user);
+        window.localStorage.token = JSON.stringify(response.data.token);
+        commit('SET_CURRENT_USER', response.data.account);
         return response;
       } catch (error) {
         return error;
       }
     },
-    async addImage(article) {
+    async addImage({ commit }, param) {
       try {
-        console.log(article);
-        let response = await Api().post('/images', article);
+        const { image, id } = param;
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('fruit_id', id);
+        const token = JSON.parse(localStorage.getItem('token'));
+        let response = await Api().post('/analysis', formData, {
+          headers: {
+            'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+            Authorization: token,
+          },
+        });
         console.log(response);
-        // let art = response.data;
-        // commit('ADD_ARTICLE', art);
-        // return art;
+        commit();
       } catch {
         return { error: 'Hubo un error al subir la imagen' };
       }

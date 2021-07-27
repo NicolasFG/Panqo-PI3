@@ -40,6 +40,10 @@
             </v-col>
          </v-row>
       </v-header>
+      <v-container>
+      <!-- ACA VA EL CARROUSEL -->
+
+      </v-container>
       <v-container/>
       <v-card
          class="mx-auto"
@@ -89,13 +93,12 @@
 
                       <v-card-text>
                         <v-row>
-                          <v-col col=6 class="pt-3">
-                            <v-icon x-large color="black">
-                              mdi-camera
-                            </v-icon>
-                          </v-col>
-                          <v-col col=6 class="pt-3">
-                           <v-file-input v-model="image" accept="image/*" type="file"/>
+                          <v-col col=12 class="pt-3">
+                           <v-file-input 
+                            style="width:100%"
+                            label="File input"
+                            outlined dense  prepend-icon="mdi-camera"
+                           v-model="image" accept="image/*" type="file"/>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -137,13 +140,12 @@
 
                       <v-card-text>
                         <v-row>
-                          <v-col col=6 class="pt-3">
-                            <v-icon x-large color="black">
-                              mdi-camera
-                            </v-icon>
-                          </v-col>
-                          <v-col col=6 class="pt-3">
-                             <v-file-input v-model="image" accept="image/*" type="file"/>
+                          <v-col col=12 class="pt-3">
+                            <v-file-input 
+                            style="width:100%"
+                            label="File input"
+                            outlined dense prepend-icon="mdi-camera"
+                           v-model="image" accept="image/*" type="file"/>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -185,13 +187,13 @@
 
                       <v-card-text>
                         <v-row>
-                          <v-col col=6 class="pt-3">
-                            <v-icon x-large color="black">
-                              mdi-camera
-                            </v-icon>
-                          </v-col>
-                          <v-col col=6 class="pt-3">
-                            <v-file-input v-model="image" accept="image/*" type="file"/>
+                          <v-col col=12 class="pt-3">
+                           <v-file-input 
+                            style="width:100%"
+                            label="File input"
+                            outlined dense
+                             prepend-icon="mdi-camera"
+                           v-model="image" accept="image/*" type="file"/>
                           </v-col>
                         </v-row>
                       </v-card-text>
@@ -266,10 +268,8 @@
         this.$router.push('/')
       },
       upload(id){
-        const formData = new FormData()
-        formData.append('image', this.image);
-        console.log(formData)
-        this.$store.dispatch('addImage',formData)
+        const param = {'image':this.image,'id':id}
+        this.$store.dispatch('addImage',param)
         switch(id){
           case 1:
             this.dialog1 = false
