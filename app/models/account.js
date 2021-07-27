@@ -10,7 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-  
+
+      account.hasMany(models.analysis,{
+        as: "analysis",
+        foreignKey: "account_id",
+        targetKey:"account_id"
+      });
+
+
     }
   }
   account.init({

@@ -20,6 +20,9 @@ module.exports = {
       status: {
         type: Sequelize.TINYINT
       },
+      api_url:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class fruit_types_analysis extends Model {
+  class analysis extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,20 +12,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      fruit_types_analysis.belongsTo(models.fruit_types,
-      {
-        as: "fruit_types",
-        foreignKey: "fruit_type_id",
+      analysis.belongsTo(models.account,{
+        as:"accounts",
+        foreignKey: "account_id",
         targetKey: "id"
-      });
+      })
+
+      analysis.belongsTo(models.fruit,{
+        as:"fruits",
+        foreignKey: "fruit_id",
+        targetKey: "id"
+      })
     }
   };
-  fruit_types_analysis.init({
-    fruit_type_id: DataTypes.INTEGER,
-    status: DataTypes.TINYINT,
+  analysis.init({
+    fruit_id: DataTypes.INTEGER,
+    account_id: DataTypes.INTEGER,
     image_key: DataTypes.STRING,
-    result:DataTypes.INTEGER,
-    result_text:DataTypes.STRING,
+    result: DataTypes.INTEGER,
+    result_info: DataTypes.STRING,
     image_url:{
       type:DataTypes.VIRTUAL,
       get(){
@@ -38,8 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'fruit_types_analysis',
-    freezeTableName: true,
+    modelName: 'analysis',
   });
-  return fruit_types_analysis;
+  return analysis;
 };

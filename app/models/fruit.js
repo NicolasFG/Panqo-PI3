@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      fruit.hasMany(models.fruit_types,{
-        as: "fruit_types",
+      fruit.hasMany(models.analysis,{
+        as: "analysis_fruit",
         foreignKey: "fruit_id",
         targetKey:"fruit_id"
       });
@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     origin: DataTypes.STRING,
     image_key: DataTypes.STRING,
     status: DataTypes.TINYINT,
+    api_url:DataTypes.STRING,
     image_url:{
       type:DataTypes.VIRTUAL,
       get(){
