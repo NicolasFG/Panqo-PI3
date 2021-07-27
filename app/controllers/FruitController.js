@@ -128,12 +128,12 @@ async function getAnalysis(req,res){
 
 async function makeAnalysis(req,res){
 
-    const {account_id} = res.locals.account;
+    const {id} = res.locals.account;
     try{
         const file=req.file;
         const result = await uploadFile(file);
         let analysis = await Analysis.create({
-            account_id:account_id,
+            account_id:id,
             image_key:result.Key,
             fruit_id:req.body.fruit_id,
             result:1,
