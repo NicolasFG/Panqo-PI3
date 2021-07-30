@@ -14,6 +14,7 @@ export default new Vuex.Store({
     SET_USERS(state, users) {
       state.Users = users;
     },
+
     LOGOUT_USER(state) {
       state.currentUser = {};
       window.localStorage.currentUser = JSON.stringify({});
