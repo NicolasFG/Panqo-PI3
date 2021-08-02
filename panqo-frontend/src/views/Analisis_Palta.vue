@@ -15,6 +15,9 @@
             <div class="title">
               Tipo
             </div>
+            <div class="infoo">
+              Palta Hass
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -22,12 +25,18 @@
             <div class="title">
               Último análisis
             </div>
+             <div class="infoo">
+              28/07/2021
+            </div>
           </v-col>
         </v-row>
         <v-row>
           <v-col col=12>
             <div class="title">
               Estado
+            </div>
+            <div class="infoo">
+              Apto
             </div>
           </v-col>
         </v-row>
@@ -37,6 +46,12 @@
     <div class="ultimos_datos">
       <div class="title2">
         Últimos datos
+      </div>
+      <div class="infoo">
+        31/07/2021 - Palta nabal o nava - Apto<br>
+        26/07/2021 - Palta fuerte - No Apto<br>
+        24/07/2021 - Palta ester - Apto<br>
+        21/07/2021 - Palta bacon - No Apto<br>
       </div>
     </div>
   </div>

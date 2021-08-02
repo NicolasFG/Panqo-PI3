@@ -15,6 +15,9 @@
             <div class="title">
               Tipo
             </div>
+            <div class="infoo">
+              Manzana Gala o Royal Gala
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -22,12 +25,18 @@
             <div class="title">
               Último análisis
             </div>
+            <div class="infoo">
+              01/08/2021
+            </div>
           </v-col>
         </v-row>
         <v-row>
           <v-col col=12>
             <div class="title">
               Estado
+            </div>
+            <div class="infoo">
+              Apto
             </div>
           </v-col>
         </v-row>
@@ -37,6 +46,12 @@
     <div class="ultimos_datos">
       <div class="title2">
         Últimos datos
+      </div>
+      <div class="infoo">
+        01/08/2021 - Manzana Gala o Royal Gala - Apto<br>
+        29/07/2021 - Manzana Granny Smith - No Apto<br>
+        26/07/2021 - Manzana Golden - Apto<br>
+        23/07/2021 - Manzana Red Delicious - No Apto<br>
       </div>
     </div>
   </div>

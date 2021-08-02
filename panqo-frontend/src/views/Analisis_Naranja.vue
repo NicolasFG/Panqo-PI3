@@ -15,6 +15,9 @@
             <div class="title">
               Tipo
             </div>
+            <div class="infoo">
+              Naranjas navelinas
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -22,12 +25,18 @@
             <div class="title">
               Último análisis
             </div>
+            <div class="infoo">
+              31/07/2021
+            </div>
           </v-col>
         </v-row>
         <v-row>
           <v-col col=12>
             <div class="title">
               Estado
+            </div>
+            <div class="infoo">
+              Apto
             </div>
           </v-col>
         </v-row>
@@ -37,6 +46,12 @@
     <div class="ultimos_datos">
       <div class="title2">
         Últimos datos
+      </div>
+      <div class="infoo">
+        31/07/2021 - Naranjas Navelate - Apto<br>
+        26/07/2021 - Naranjas Navel Lane Late - No Apto<br>
+        24/07/2021 - Naranjas Navel Foyos - Apto<br>
+        21/07/2021 - Naranjas Newhall - No Apto<br>
       </div>
     </div>
   </div>
