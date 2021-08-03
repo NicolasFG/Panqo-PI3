@@ -63,6 +63,23 @@ export default new Vuex.Store({
         return error;
       }
     },
+    async getLog(){
+      try{
+
+        const token = JSON.parse(localStorage.getItem('token'));
+        let response = await Api().get('/analysis',{
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        return response.data;
+
+
+      }catch(err){
+        return { error: 'Hubo un error al subir la imagen' };
+      }
+    },
     async addImage({ commit }, param) {
       try {
         const { image, id } = param;

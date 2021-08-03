@@ -15,13 +15,13 @@
         <v-row>
           <v-col col="12">
             <div class="title">Último análisis</div>
-            <div class="infoo">01/08/2021</div>
+            <div class="infoo">{{last.createdAt |formatDate}}</div>
           </v-col>
         </v-row>
         <v-row>
           <v-col col="12">
             <div class="title">Estado</div>
-            <div class="infoo">Apto</div>
+            <div class="infoo">{{last.result_info}}</div>
           </v-col>
         </v-row>
       </div>
@@ -30,17 +30,42 @@
     <div class="ultimos_datos">
       <div class="title2">Últimos datos</div>
       <div class="infoo">
-        01/08/2021 - Manzana Gala o Royal Gala - Apto<br />
+         <li v-for="item in analysis" v-bind:key="item.id">
+            {{item.createdAt |formatDate}} {{' - '+'Manzana'+' - '+ item.result_info }}
+          <v-btn depressed
+                color="primary" v-on:click="show(item)">Show Image</v-btn>
+        </li>
+        <!-- 01/08/2021 - Manzana Gala o Royal Gala - Apto<br />
         29/07/2021 - Manzana Granny Smith - No Apto<br />
         26/07/2021 - Manzana Golden - Apto<br />
-        23/07/2021 - Manzana Red Delicious - No Apto<br />
+        23/07/2021 - Manzana Red Delicious - No Apto<br /> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data:()=>({
+      analysis:[],
+      last:{},
+      type:1
+    }),
+    mounted(){
+     this.getLog()
+    },
+    methods:{
+       async getLog(){
+          let response = await this.$store.dispatch('getLog');
+          this.analysis=response.filter(e=> e.fruit_id==this.type).sort().reverse();
+          this.last=this.analysis[0];
+          console.log(this.analysis);
+        },
+        show(item){
+          window.open(item.image_url, '_blank');
+        }
+    }
+};
 </script>
 
 <style lang="scss" scoped>

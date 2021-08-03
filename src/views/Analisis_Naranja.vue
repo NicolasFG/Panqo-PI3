@@ -5,7 +5,7 @@
         <v-row>
           <v-col col="6">
             <div class="title">Nombre</div>
-            <div class="infoo">Naranja Fuerte</div>
+            <div class="infoo">Naranja</div>
           </v-col>
           <v-col col="6">
             <div class="title">Tipo</div>
@@ -15,13 +15,13 @@
         <v-row>
           <v-col col="12">
             <div class="title">Último análisis</div>
-            <div class="infoo">31/07/2021</div>
+            <div class="infoo">{{last.createdAt |formatDate}}</div>
           </v-col>
         </v-row>
         <v-row>
           <v-col col="12">
             <div class="title">Estado</div>
-            <div class="infoo">Apto</div>
+            <div class="infoo">{{last.result_info}}</div>
           </v-col>
         </v-row>
       </div>
@@ -30,17 +30,45 @@
     <div class="ultimos_datos">
       <div class="title2">Últimos datos</div>
       <div class="infoo">
-        31/07/2021 - Naranjas Navelate - Apto<br />
+
+         <li v-for="item in analysis" v-bind:key="item.id">
+            {{item.createdAt |formatDate}} {{' - '+'Naranja'+' - '+ item.result_info }}
+          <v-btn depressed
+                color="primary" v-on:click="show(item)">Show Image</v-btn>
+        </li>
+
+        <!-- 31/07/2021 - Naranjas Navelate - Apto<br />
         26/07/2021 - Naranjas Navel Lane Late - No Apto<br />
         24/07/2021 - Naranjas Navel Foyos - Apto<br />
-        21/07/2021 - Naranjas Newhall - No Apto<br />
+        21/07/2021 - Naranjas Newhall - No Apto<br /> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+
+    data:()=>({
+      analysis:[],
+      last:{},
+      type:3
+    }),
+    mounted(){
+     this.getLog()
+    },
+    methods:{
+       async getLog(){
+          let response = await this.$store.dispatch('getLog');
+          this.analysis=response.filter(e=> e.fruit_id==this.type).sort().reverse();
+          this.last=this.analysis[0];
+          console.log(this.analysis);
+        },
+        show(item){
+          window.open(item.image_url, '_blank');
+        }
+    }
+};
 </script>
 <style lang="scss" scoped>
 .page {

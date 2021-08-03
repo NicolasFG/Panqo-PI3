@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify';
 
 import axios from 'axios';
 import Vueaxios from 'vue-axios';
+import moment from 'moment';
 
 Vue.use(Vueaxios, axios);
 
@@ -15,6 +16,12 @@ Vue.config.productionTip = false;
 // if (token) {
 //   Vue.prototype.$http.defaults.headers.common['Authorization'] = token;
 // }
+Vue.filter('formatDate', function(value) {
+  if (value) {
+      return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+});
+
 new Vue({
   router,
   vuetify,
