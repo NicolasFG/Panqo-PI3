@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="fondo_palta">
-      <router-link to="/">Home</router-link>
+      <router-link to="/inicio" style="color:white;text-align: left;">Home</router-link>
       <div class="informacion">
         <v-row>
           <v-col col="6">
