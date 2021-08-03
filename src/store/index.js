@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Api from '@/services/api';
+import router from '../router/index.js'
 
 Vue.use(Vuex);
 
@@ -93,6 +94,20 @@ export default new Vuex.Store({
             Authorization: token,
           },
         });
+        switch(id){
+          case 1:
+            //this.dialog1 = false
+            router.push('/analizar_manzana')
+            break;
+          case 2:
+            //this.dialog2 = false
+            router.push('/analizar_palta')
+            break;
+          case 3:
+            //this.dialog3 = false
+            router.push('/analizar_naranja')
+            break;
+        }
         console.log(response);
         commit();
       } catch {

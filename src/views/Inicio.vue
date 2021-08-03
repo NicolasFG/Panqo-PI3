@@ -270,20 +270,7 @@
       upload(id){
         const param = {'image':this.image,'id':id}
         this.$store.dispatch('addImage',param)
-        switch(id){
-          case 1:
-            this.dialog1 = false
-            this.$router.push('/analizar_manzana')
-            break;
-          case 2:
-            this.dialog2 = false
-            this.$router.push('/analizar_palta')
-            break;
-          case 3:
-            this.dialog3 = false
-            this.$router.push('/analizar_naranja')
-            break;
-        }
+       
       }
     },
   }
