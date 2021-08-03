@@ -73,7 +73,8 @@
          <v-container fluid class="c">
             <v-row dense class="row_">
               <v-col col=4 class="col_">
-                Manzana
+                 <router-link to="/analizar_manzana" style="color:black;text-align: left;">Manzana</router-link>
+                
                 <div class="mt-2">
                   <v-dialog v-model="dialog1" width="500">
                     <template v-slot:activator="{ on, attrs }">
@@ -120,7 +121,8 @@
                 </div>
               </v-col>
               <v-col col=4 class="col_">
-                Palta
+                 <router-link to="/analizar_palta" style="color:black;text-align: left;">Palta</router-link>
+                
                 <div class="mt-2">
                   <v-dialog v-model="dialog2" width="500">
                     <template v-slot:activator="{ on, attrs }">
@@ -167,7 +169,7 @@
                 </div>
               </v-col>
               <v-col col=4 class="col_">
-                Naranja
+                <router-link to="/analizar_naranja" style="color:black;text-align: left;">Naranja</router-link>
                 <div class="mt-2">
                   <v-dialog v-model="dialog3" width="500">
                     <template v-slot:activator="{ on, attrs }">
