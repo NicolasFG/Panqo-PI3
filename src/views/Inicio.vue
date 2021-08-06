@@ -240,6 +240,17 @@
   </v-container>
 </template>
 
+<style scoped>
+
+.title2{
+  padding-left: 20px !important;
+}
+
+</style>
+
+
+
+
 <script>
 
   export default {

@@ -30,22 +30,34 @@
     </div>
     <div class="ultimos_datos">
       <div class="title2">Últimos datos</div>
-      <div class="infoo">
-
+     <div class="infoo">
+        <ul style="list-style: none;">
          <li v-for="item in analysis" v-bind:key="item.id">
-            {{item.createdAt |formatDate}} {{' - '+'Naranja'+' - '+ item.result_info }}
-          <v-btn depressed
-                color="primary" v-on:click="show(item)">Show Image</v-btn>
+           <a v-on:click="show(item)"> {{item.createdAt |formatDate}} {{' - '+'Manzana'+' - '+ item.result_info }}</a>
         </li>
-
-        <!-- 31/07/2021 - Naranjas Navelate - Apto<br />
-        26/07/2021 - Naranjas Navel Lane Late - No Apto<br />
-        24/07/2021 - Naranjas Navel Foyos - Apto<br />
-        21/07/2021 - Naranjas Newhall - No Apto<br /> -->
+        </ul>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+
+@media (max-width:500px) { 
+
+  .img{
+    position: relative;
+    left: 120px;
+    top: -90px !important;
+    width: 130px;
+    height: 130px;
+  }
+}
+.title2{
+  padding-left: 20px !important;
+}
+
+</style>
 
 <script>
 export default {
